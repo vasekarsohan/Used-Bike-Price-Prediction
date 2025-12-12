@@ -7,7 +7,7 @@ This project includes EDA, Data Cleaning, Custom ML Models, Model Evaluation, an
 
 
 # 📁 Project Structure
-
+```text
 📦 Used_Motorcycle_Price_Prediction
 │
 ├── data
@@ -66,7 +66,7 @@ This project includes EDA, Data Cleaning, Custom ML Models, Model Evaluation, an
 ├── streamlit_app.py
 ├── requirements.txt
 └── README.md
-
+```
 
 
 # 🧠 Project Overview
@@ -224,5 +224,5 @@ streamlit run streamlit_app.py
 
 # ✨ Author
 
-Sohan Vasekar
-Machine Learning Project – Semester 5
+Sohan Vasekar<br>
+Machine Learning Project
