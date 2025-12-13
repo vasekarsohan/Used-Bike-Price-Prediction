@@ -262,5 +262,5 @@ streamlit run streamlit_app.py
 
 ## ✨ Author
 
-**Sohan Vasekar**
+**Sohan Vasekar**<br/>
 Machine Learning Project
