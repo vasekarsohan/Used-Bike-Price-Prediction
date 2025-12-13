@@ -1,12 +1,14 @@
+````markdown
 # 🚀 Used Motorcycle Price Prediction
 
-A Machine Learning project that predicts the fair selling price of used motorcycles using custom ML models implemented completely from scratch (no scikit-learn regressors).
+A Machine Learning project that predicts the fair selling price of used motorcycles using **custom ML models implemented completely from scratch** (no scikit-learn regressors).
 
-This project includes EDA, Data Cleaning, Custom ML Models, Model Evaluation, and a Streamlit Web App.
+The project covers **EDA, Data Cleaning, Feature Engineering, Model Training, Evaluation, and Deployment using Streamlit**.
 
+---
 
+## 📁 Project Structure
 
-# 📁 Project Structure
 ```text
 📦 Used_Motorcycle_Price_Prediction
 │
@@ -30,19 +32,32 @@ This project includes EDA, Data Cleaning, Custom ML Models, Model Evaluation, an
 │   ├── heatmaps
 │   │   └── full_correlation_heatmap.png
 │   │
-│   └── insights
-│       ├── selling_price_distribution.png
-│       ├── brand_vs_price.png
-│       ├── year_vs_price.png
-│       ├── km_vs_price.png
-│       ├── owner_vs_price.png
-│       └── ex_price_vs_resale.png
+│   ├── insights
+│   │   ├── selling_price_distribution.png
+│   │   ├── brand_vs_price.png
+│   │   ├── year_vs_price.png
+│   │   ├── km_vs_price.png
+│   │   ├── owner_vs_price.png
+│   │   └── ex_price_vs_resale.png
+│   │
+│   └── evaluation
+│       ├── KNN_actual_vs_pred.png
+│       ├── KNN_residuals_vs_pred.png
+│       ├── DecisionTree_actual_vs_pred.png
+│       ├── DecisionTree_residuals_vs_pred.png
+│       ├── RandomForest_actual_vs_pred.png
+│       ├── RandomForest_residuals_vs_pred.png
+│       ├── GradientBoosting_actual_vs_pred.png
+│       └── GradientBoosting_residuals_vs_pred.png
 │
 ├── models
 │   ├── knn.pkl
 │   ├── decision_tree.pkl
 │   ├── random_forest.pkl
 │   └── gradient_boosting.pkl
+│
+├── report
+│   └── Used_Motorcycle_Price_Prediction_Report.pdf
 │
 ├── src
 │   ├── models
@@ -58,7 +73,8 @@ This project includes EDA, Data Cleaning, Custom ML Models, Model Evaluation, an
 │   │   └── generate_name_encoding.py
 │   │
 │   ├── training
-│   │   └── train.py
+│   │   ├── train.py
+│   │   └── generate_evaluation_plots.py
 │   │
 │   └── utils
 │       └── metrics.py
@@ -66,163 +82,185 @@ This project includes EDA, Data Cleaning, Custom ML Models, Model Evaluation, an
 ├── streamlit_app.py
 ├── requirements.txt
 └── README.md
-```
+````
 
+---
 
-# 🧠 Project Overview
+## 🧠 Project Overview
 
-The goal is to build a machine learning system capable of predicting the selling price of used motorcycles.
+The goal of this project is to build a machine learning system capable of predicting the resale price of used motorcycles based on historical listing data.
 
-All ML models are implemented manually from scratch, including:
+All regression models are implemented **from scratch**, without using scikit-learn regressors:
 
 * KNN Regression
-* Decision Tree Regressor
-* Random Forest Regressor
-* Gradient Boosting Regressor
+* Decision Tree Regression
+* Random Forest Regression
+* Gradient Boosting Regression
 
+---
 
-
-# 📌 Final Features Used (6 Features)
-
-Your final cleaned dataset contains:
+## 📌 Final Features Used (6 Features)
 
 | Feature           | Description                        |
-| -- | - |
+| ----------------- | ---------------------------------- |
 | name (encoded)    | Target mean encoding of bike model |
 | year              | Manufacturing year                 |
 | seller_type       | 0 = Individual, 1 = Dealer         |
-| owner             | 0,1,2,3 → ordinal mapping          |
-| km_driven         | Total kilometers                   |
+| owner             | Ordinal encoding (0–3)             |
+| km_driven         | Total kilometers driven            |
 | ex_showroom_price | Original showroom price            |
 
-# 📊 Exploratory Data Analysis (EDA)
+---
 
-Performed in: `src/preprocessing/EDA.py`
+## 📊 Exploratory Data Analysis (EDA)
 
-### ✔ Tasks Completed:
+Implemented in: `src/preprocessing/EDA.py`
+
+### ✔ Tasks Performed
 
 * Basic data inspection
-* Handling missing values
-* Outlier detection & capping using IQR
-* Before/After distributions
-* Boxplots
-* Full correlation heatmap
-* Key Insight-based visualizations
+* Missing value handling
+* Outlier detection and capping using IQR
+* Distribution analysis (before and after preprocessing)
+* Boxplots for outlier visualization
+* Correlation heatmap
+* Feature-wise insight visualizations
 
-### 📈 Insights Visualizations
+### 📈 Insight Plots (`plots/insights/`)
 
-Saved in `plots/insights/`:
+| Insight                           | Plot File                      |
+| --------------------------------- | ------------------------------ |
+| Selling price distribution        | selling_price_distribution.png |
+| Brand vs resale price             | brand_vs_price.png             |
+| Manufacturing year vs price       | year_vs_price.png              |
+| Kilometers driven vs price        | km_vs_price.png                |
+| Owner count vs price              | owner_vs_price.png             |
+| Ex-showroom price vs resale price | ex_price_vs_resale.png         |
 
-| Insight                                 | Visualization                  |
-|  |  |
-| Distribution of selling price           | selling_price_distribution.png |
-| Premium brands have higher resale value | brand_vs_price.png             |
-| Newer bikes sell for higher prices      | year_vs_price.png              |
-| Higher km reduces resale price          | km_vs_price.png                |
-| Owner count impact                      | owner_vs_price.png             |
-| Ex-showroom price drives resale price   | ex_price_vs_resale.png         |
+---
 
+## 🔧 Data Preprocessing
 
+Key preprocessing steps:
 
-# 🔧 Data Preprocessing
-
-Key steps:
-
-✔ Missing value handling (median imputation for ex_showroom_price)
-✔ Outlier capping (IQR)
+✔ Median imputation for missing ex_showroom_price
+✔ IQR-based outlier capping
 ✔ Ordinal encoding for owner
 ✔ Binary encoding for seller_type
-✔ Target mean encoding for bike names
-✔ Export cleaned dataset: `cleaned_data.csv`
-✔ Export name encoding file for Streamlit
+✔ Target mean encoding for motorcycle names
+✔ Exported cleaned dataset (`cleaned_data.csv`)
+✔ Exported name encoding file for Streamlit
 
+---
 
+## 🤖 Model Training
 
-# 🤖 Model Training
-
-Located in `src/training/train.py`
-
-Trains the following scratch-built models:
-
-* KNN Regressor
-* Decision Tree Regressor
-* Random Forest Regressor
-* Gradient Boosting Regressor
+Training script: `src/training/train.py`
 
 Each model is:
 
-✔ Trained on cleaned dataset
-✔ Evaluated on test set
-✔ Saved as `.pkl` in `/models/`
-✔ Metrics stored in `model_evaluation.csv`
+* Trained on the cleaned dataset
+* Evaluated on a test set
+* Saved as `.pkl` in `/models/`
+* Metrics stored in `data/model_evaluation.csv`
 
+---
 
+## 📈 Model Evaluation
 
-# 📈 Model Evaluation
-
-Saved in:
-
-data/model_evaluation.csv
-
-Metrics stored:
+Evaluation metrics include:
 
 * R² Score
 * RMSE
 * MAE
 
-No comparison plots are used in final version.
-No model_comparison.py.
+### 📊 Evaluation Plots (`plots/evaluation/`)
 
+For **each model**, the following plots are generated:
 
+* Actual vs Predicted Selling Price
+* Residuals vs Predicted Price
 
-# 🌐 Streamlit App
+These plots help analyze prediction accuracy, bias, and error distribution.
+
+---
+
+## 🌐 Streamlit Web App
 
 Built in: `streamlit_app.py`
 
-### App Features
+### Features
 
-* Choose bike model (target-encoded)
+* Select motorcycle model (target encoded)
+* Choose regression model (KNN, DT, RF, GBDT)
+* Input bike details:
 
-* Select ML model (KNN, Decision Tree, RF, GBDT)
-
-* Enter:
-
-  * Year
+  * Manufacturing year
   * Seller type
   * Owner count
-  * KM driven
+  * Kilometers driven
   * Ex-showroom price
+* Instant resale price prediction
 
-* Predict resale price instantly
+### Run the app
 
-### Run the app:
+```bash
 streamlit run streamlit_app.py
+```
 
-# ▶️ Running the Project
+---
+
+## 📄 Project Report
+
+A detailed project report including EDA plots, model explanations, evaluation analysis, and conclusions is available as a PDF:
+
+```
+report/Used_Motorcycle_Price_Prediction_Report.pdf
+```
+
+---
+
+## ▶️ Running the Project
 
 ### 1️⃣ Install dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
 ### 2️⃣ Run EDA (optional)
 
+```bash
 python src/preprocessing/EDA.py
+```
 
 ### 3️⃣ Generate bike name encoding
 
+```bash
 python src/preprocessing/generate_name_encoding.py
+```
 
 ### 4️⃣ Train all models
 
+```bash
 python -m src.training.train
+```
 
-### 5️⃣ Launch Streamlit App
+### 5️⃣ Generate evaluation plots
 
+```bash
+python -m src.training.generate_evaluation_plots
+```
+
+### 6️⃣ Launch Streamlit app
+
+```bash
 streamlit run streamlit_app.py
+```
 
+---
 
+## ✨ Author
 
-# ✨ Author
-
-Sohan Vasekar<br>
+**Sohan Vasekar**
 Machine Learning Project
